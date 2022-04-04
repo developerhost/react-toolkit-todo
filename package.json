@@ -2,9 +2,12 @@
   "name": "todo",
   "version": "0.1.0",
   "private": true,
+  "moduleResolution": "node",
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/icons": "^4.11.2",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.5.1",
+    "@mui/material": "^5.5.3",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -18,8 +21,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.29.0",
-    "react-redux": "^7.2.7",
-    "react-scripts": "5.0.0",
+    "react-redux": "^7.1.1",
+    "react-scripts": "^5.0.0",
     "typescript": "~4.1.5"
   },
   "scripts": {
@@ -44,8 +47,6 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.12.0",
-    "eslint-config-prettier": "^8.5.0",
-    "prettier": "^2.6.1"
+    "sass": "^1.49.10"
   }
 }
