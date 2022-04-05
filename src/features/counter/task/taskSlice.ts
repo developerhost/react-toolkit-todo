@@ -50,6 +50,11 @@ export const taskSlice = createSlice({
         task.title = action.payload.title;
       }
     },
+    // taskの削除
+    deleteTask: (state, action) => {
+      // 指定したタスク以外で新しくstate.tasksの配列を作成し直している
+      state.tasks = state.tasks.filter((t) => t.id !== action.payload.id);
+    },
     // どのtaskを選択しているか管理
     selectTask: (state, action) => {
       state.selectedTask = action.payload;
@@ -58,11 +63,26 @@ export const taskSlice = createSlice({
     handleModalOpen: (state, action) => {
       state.isModalOpen = action.payload;
     },
+    // task完了未完了のチェックを変更
+    completeTask: (state, action) => {
+      // state.tasksの中から指定したtaskを抜き出す
+      const task = state.tasks.find((t) => t.id === action.payload);
+      if (task) {
+        // 抜き出したcompletedを反転
+        task.completed = !task.completed;
+      }
+    },
   },
 });
 
-export const { createTask, editTask, selectTask, handleModalOpen } =
-  taskSlice.actions;
+export const {
+  createTask,
+  editTask,
+  deleteTask,
+  selectTask,
+  handleModalOpen,
+  completeTask,
+} = taskSlice.actions;
 
 // コンポーネント側からuseSlectorを用いてselectTaskを指定することで
 // stateの値をコンポーネントに渡すことが可能
