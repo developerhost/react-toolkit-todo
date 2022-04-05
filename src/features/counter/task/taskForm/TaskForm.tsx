@@ -2,35 +2,39 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import {
+  fetchTasks,
   createTask,
   editTask,
   handleModalOpen,
   selectSelectedTask,
 } from "../taskSlice";
+import { AppDispatch } from "../../../../app/store";
 import styles from "./TaskForm.module.scss";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
-type Inputs = {
-  taskTitle?: string;
-};
+// type Inputs = {
+//   taskTitle: string;
+// };
 
 type PropTyeps = {
   edit?: boolean;
 };
 
 const TaskForm: React.FC<PropTyeps> = ({ edit }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const selectedTask = useSelector(selectSelectedTask);
   const { register, handleSubmit, reset } = useForm();
-  const handleCreate = (data: any) => {
-    dispatch(createTask(data.taskTitle));
+  const handleCreate = async (data: any) => {
+    await createTask(data.taskTitle);
     reset();
+    dispatch(fetchTasks());
   };
-  const handleEdit = (data: Inputs) => {
+  const handleEdit = async (data: any) => {
     const sendData = { ...selectedTask, title: data.taskTitle };
-    dispatch(editTask(sendData));
+    await editTask(sendData);
     dispatch(handleModalOpen(false));
+    dispatch(fetchTasks());
     console.log(data);
   };
   return (

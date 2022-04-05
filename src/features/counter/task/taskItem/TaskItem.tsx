@@ -14,8 +14,10 @@ import {
   deleteTask,
   handleModalOpen,
   selectIsModalOpen,
-  completeTask,
+  editTask,
+  fetchTasks,
 } from "../taskSlice";
+import { AppDispatch } from "../../../../app/store";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,18 +32,29 @@ const style = {
 };
 
 interface PropTypes {
-  task: { id: number; title: string; complete?: boolean };
+  task: { id: string; title: string; completed: boolean };
 }
 
 const TaskItem: React.FC<PropTypes> = ({ task }) => {
   const isModalOpen = useSelector(selectIsModalOpen);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const handleOpen = () => {
     dispatch(selectTask(task));
     dispatch(handleModalOpen(true));
   };
   const handleClose = () => {
     dispatch(handleModalOpen(false));
+  };
+
+  const handleEdit = async (id: string, title: string, completed: boolean) => {
+    const sendData = { id, title, completed: !completed };
+    await editTask(sendData);
+    dispatch(fetchTasks());
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteTask(id);
+    dispatch(fetchTasks());
   };
   return (
     <div className={styles.root}>
@@ -51,15 +64,15 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
       </div>
       <div className={styles.right_item}>
         <Checkbox
-          checked={task.complete}
-          onClick={() => dispatch(completeTask(task))}
+          checked={task.completed}
+          onClick={() => handleEdit(task.id, task.title, task.completed)}
           className={styles.checkbox}
         />
         <button onClick={handleOpen} className={styles.edit_button}>
           <EditIcon className={styles.icon} />
         </button>
         <button
-          onClick={() => dispatch(deleteTask(task))}
+          onClick={() => handleDelete(task.id)}
           className={styles.delete_button}
         >
           <DeleteIcon className={styles.icon} />
